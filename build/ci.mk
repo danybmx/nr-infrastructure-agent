@@ -35,6 +35,14 @@ ci/test-coverage: ci/deps
 			-w /go/src/github.com/newrelic/infrastructure-agent \
 			$(BUILDER_IMG_TAG) make test-coverage
 
+.PHONY: ci/test-slow
+ci/test-slow: ci/deps
+	@docker run --rm -t \
+			--name "infrastructure-agent-test-slow" \
+			-v $(CURDIR):/go/src/github.com/newrelic/infrastructure-agent \
+			-w /go/src/github.com/newrelic/infrastructure-agent \
+			$(BUILDER_IMG_TAG) make test-slow
+
 .PHONY: ci/snyk-test
 ci/snyk-test:
 	@docker run --rm -t \

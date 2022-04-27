@@ -30,6 +30,7 @@ export GO111MODULE := on
 export PATH := $(PROJECT_WORKSPACE)/bin:$(PATH)
 
 GO_TEST ?= test $(TEST_OPTIONS) $(TEST_FLAGS) $(SOURCE_FILES) -run $(TEST_PATTERN) -timeout=10m
+GO_TEST_SLOW ?= test $(TEST_OPTIONS) --tags=slow $(TEST_FLAGS) $(SOURCE_FILES) -run $(TEST_PATTERN) -timeout=10m
 GO_FMT 	?= gofmt -s -w -l $(SOURCE_FILES_DIR)
 
 .PHONY: deps
@@ -52,6 +53,14 @@ test-coverage: deps
 	$(GO_BIN) $(GO_TEST)
 	@echo '[test] Converting: $(COVERAGE_FILE) into lcov.info'
 	@(gcov2lcov -infile=$(COVERAGE_FILE) -outfile=lcov.info)
+
+.PHONY: test-slow
+test-slow: deps
+	@printf '\n================================================================\n'
+	@printf 'Target: test-slow'
+	@printf '\n================================================================\n'
+	@echo '[test] Testing packages: $(SOURCE_FILES)'
+	$(GO_BIN) $(GO_TEST_SLOW)
 
 .PHONY: test
 test: deps test-only

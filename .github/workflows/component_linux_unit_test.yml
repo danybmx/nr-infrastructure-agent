@@ -25,6 +25,15 @@ jobs:
       - name: Validate code
         run: make ci/validate
 
+  test-slow:
+    name: Unit tests slow
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Running unit tests
+        run: make ci/test-slow
+
   test:
     name: Unit tests with coverage
     runs-on: ubuntu-20.04
@@ -35,9 +44,6 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: ${{env.GO_VERSION}}
-
-      - name: Validate code
-        run: make ci/validate
 
       - name: Running unit tests
         run: make ci/test-coverage
